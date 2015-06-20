@@ -15,13 +15,12 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:ems="10"
         android:id="@+id/edit_date"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="34dp"
-        android:layout_marginTop="51dp"
+        android:layout_marginTop="67dp"
         android:onClick="editDate"
         android:editable="false"
-        android:text="June 18, 2015" />
+        android:text="June 18, 2015"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -36,7 +35,34 @@
         android:editable="false"
         android:text="10:00 pm" />
 
+    <Switch
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/transition_switch"
+        android:layout_marginTop="26dp"
+        android:text="Leaving"
+        android:showText="false"
+        android:layout_below="@+id/edit_time"
+        android:layout_alignParentStart="true"
+        />
 
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/loc_category_spinner"
+        android:layout_marginTop="82dp"
+        android:spinnerMode="dropdown"
+        android:layout_below="@+id/transition_switch"
+        android:layout_alignParentStart="true" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/location_spinner"
+        android:spinnerMode="dropdown"
+        android:layout_marginTop="23dp"
+        android:layout_below="@+id/loc_category_spinner"
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>

@@ -7,9 +7,9 @@ import java.util.Calendar;
  */
 public class Event {
 
-    private Calendar mCalendar; // holds the date and time?
-    private String mLocName;
-    private boolean mEntering;
+    public Calendar mCalendar = Calendar.getInstance();
+    public String mLocName;
+    public boolean mTransition = false;
 
 
 

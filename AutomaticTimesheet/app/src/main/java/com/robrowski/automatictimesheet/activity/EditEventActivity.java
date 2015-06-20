@@ -8,11 +8,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.robrowski.automatictimesheet.R;
+import com.robrowski.automatictimesheet.model.Event;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -21,29 +25,43 @@ import java.util.Locale;
 public class EditEventActivity extends ActionBarActivity {
     private static final String TAG = EditEventActivity.class.toString();
 
-    private Calendar myCalendar = Calendar.getInstance(); // TODO  Maybe keep this is the "event" object?
     private TextView mEditDate, mEditTime;
 
     private DatePickerDialog.OnDateSetListener mOnDateSetListener;
     private TimePickerDialog.OnTimeSetListener mOnTimeSetListener;
+    private CompoundButton mTransitionSwitch;
+    private Spinner mLocCategorySpinner, mLocSpinner;
+
+
+    private Event mEvent = new Event();// TODO - dont init here
+    private Calendar mCalendar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getIntent(); // TODO Pull the event out of the intent
+
+        mCalendar = mEvent.mCalendar;
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_event);
 
         mEditDate = (TextView) findViewById(R.id.edit_date);
         mEditTime = (TextView) findViewById(R.id.edit_time);
+        mTransitionSwitch = (CompoundButton) findViewById(R.id.transition_switch);
+        mLocCategorySpinner = (Spinner) findViewById(R.id.loc_category_spinner);
+        mLocSpinner = (Spinner) findViewById(R.id.location_spinner);
         updateDateLabel(); // Assumes event data is already loaded
         updateTimeLabel();
+        updateTransitionSwitch();
 
          mOnDateSetListener = new DatePickerDialog.OnDateSetListener() {
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, monthOfYear);
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                mCalendar.set(Calendar.YEAR, year);
+                mCalendar.set(Calendar.MONTH, monthOfYear);
+                mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 updateDateLabel();
             }
         };
@@ -52,22 +70,46 @@ public class EditEventActivity extends ActionBarActivity {
 
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                myCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay );
-                myCalendar.set(Calendar.MINUTE, minute);
+                mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                mCalendar.set(Calendar.MINUTE, minute);
                 updateTimeLabel();
             }
         };
 
+        mTransitionSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mEvent.mTransition = isChecked;
+                updateTransitionSwitch();
+            }
+        });
 
+
+        // Set up the spinners
+        String[] categories = {"Home", "Work", "Shopping", "Other"};
+        String[] locations  = {"Wellesley", "N Reading", "Westborough", "Moms", "Dads", "Kellys"};
+        setSpinnerAdapter(mLocCategorySpinner, categories);
+        setSpinnerAdapter(mLocSpinner, locations);
     }
+
+    // TODO populate spinner from DB of locations (geo fences)
+    // TODO customize spinner? make it pretty?
+    private void setSpinnerAdapter(Spinner s, Object[] objects){
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item , objects);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        s.setAdapter(adapter);
+    }
+
+
+
+
 
     /** Called when the date field is clicked on */
     public void editDate(View v){
         new DatePickerDialog(this,
                 mOnDateSetListener,
-                myCalendar.get(Calendar.YEAR),
-                myCalendar.get(Calendar.MONTH),
-                myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                mCalendar.get(Calendar.YEAR),
+                mCalendar.get(Calendar.MONTH),
+                mCalendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 
     /** Called when the time field is clicked on */
@@ -75,27 +117,35 @@ public class EditEventActivity extends ActionBarActivity {
         Log.i(TAG, "Edit time clicked");
         new TimePickerDialog(this,
                 mOnTimeSetListener,
-                myCalendar.get(Calendar.HOUR_OF_DAY),
-                myCalendar.get(Calendar.MINUTE),
+                mCalendar.get(Calendar.HOUR_OF_DAY),
+                mCalendar.get(Calendar.MINUTE),
                 false).show(); // TODO 24 hr mode as a preference
     }
     
     
     
     private void updateDateLabel(){
-        String dateFormat = "MMM dd, yyyy"; // TODO better date format
+        String dateFormat = "MMM dd, yyyy";
         // TODO cute stuff to say "Yesterday" or "Two Days ago" or "Today"
         SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.US);
-        mEditDate.setText(sdf.format(myCalendar.getTime()));
+        mEditDate.setText(sdf.format(mCalendar.getTime()));
     }
 
     private void updateTimeLabel(){
         String timeFormat = "hh:mm a";
         SimpleDateFormat sdf = new SimpleDateFormat(timeFormat, Locale.US);
-        mEditTime.setText(sdf.format(myCalendar.getTime()));
+        mEditTime.setText(sdf.format(mCalendar.getTime()));
     }
-    
 
+    private void updateTransitionSwitch() {
+        mTransitionSwitch.setChecked(mEvent.mTransition);
+        if (mEvent.mTransition){
+            mTransitionSwitch.setText("Arrival");
+        } else {
+            mTransitionSwitch.setText("Departure");
+        }
+
+    }
 
 
 
