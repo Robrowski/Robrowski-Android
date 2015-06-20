@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
@@ -22,8 +23,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class EditEventActivity extends ActionBarActivity {
-    private static final String TAG = EditEventActivity.class.toString();
+public class EditEventActivity
+        extends ActionBarActivity
+        implements AdapterView.OnItemSelectedListener{
+    private static final String TAG = "EditEventActivity";
 
     private TextView mEditDate, mEditTime;
 
@@ -32,7 +35,9 @@ public class EditEventActivity extends ActionBarActivity {
     private CompoundButton mTransitionSwitch;
     private Spinner mLocCategorySpinner, mLocSpinner;
 
-
+    /** This is the event initially displayed here. It should not be passed anywhere except to
+     *  be saved to the db. It will hold all edits.
+     */
     private Event mEvent = new Event();// TODO - dont init here
     private Calendar mCalendar;
 
@@ -54,6 +59,7 @@ public class EditEventActivity extends ActionBarActivity {
         updateDateLabel(); // Assumes event data is already loaded
         updateTimeLabel();
         updateTransitionSwitch();
+
 
          mOnDateSetListener = new DatePickerDialog.OnDateSetListener() {
 
@@ -96,6 +102,7 @@ public class EditEventActivity extends ActionBarActivity {
     private void setSpinnerAdapter(Spinner s, Object[] objects){
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item , objects);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        s.setOnItemSelectedListener(this);
         s.setAdapter(adapter);
     }
 
@@ -114,7 +121,7 @@ public class EditEventActivity extends ActionBarActivity {
 
     /** Called when the time field is clicked on */
     public void editTime(View v){
-        Log.i(TAG, "Edit time clicked");
+        Log.d(TAG, "Edit time clicked");
         new TimePickerDialog(this,
                 mOnTimeSetListener,
                 mCalendar.get(Calendar.HOUR_OF_DAY),
@@ -149,8 +156,26 @@ public class EditEventActivity extends ActionBarActivity {
 
 
 
+    /* Stuff for the spinners */
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String selected = (String) parent.getSelectedItem();
+        if (view.getId() == R.id.loc_category_spinner) { // Category
+            mEvent.mCategory = selected;
+            Log.i(TAG, "Category: " + mEvent.mCategory);
+        } else { // location spinner
+            mEvent.mLocation = selected;
+            Log.i(TAG, "Location: " + selected);
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 
 
+    /* Action bar + menu */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -172,8 +197,4 @@ public class EditEventActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-
-
-
 }

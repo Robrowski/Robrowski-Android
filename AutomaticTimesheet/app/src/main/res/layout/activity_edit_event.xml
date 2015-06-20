@@ -50,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/loc_category_spinner"
-        android:layout_marginTop="82dp"
+        android:layout_marginTop="26dp"
         android:spinnerMode="dropdown"
         android:layout_below="@+id/transition_switch"
         android:layout_alignParentStart="true" />
@@ -60,9 +60,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/location_spinner"
         android:spinnerMode="dropdown"
-        android:layout_marginTop="23dp"
         android:layout_below="@+id/loc_category_spinner"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="23dp" />
 
 
 </RelativeLayout>

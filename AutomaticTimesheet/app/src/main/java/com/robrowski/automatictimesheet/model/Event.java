@@ -8,9 +8,11 @@ import java.util.Calendar;
 public class Event {
 
     public Calendar mCalendar = Calendar.getInstance();
-    public String mLocName;
     public boolean mTransition = false;
+    public String mCategory, mLocation; // location referenced by name
 
+
+    // ID?
 
 
 }
