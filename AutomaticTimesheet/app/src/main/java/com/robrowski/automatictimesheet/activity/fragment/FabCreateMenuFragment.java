@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -11,7 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.robrowski.automatictimesheet.AppConstants;
 import com.robrowski.automatictimesheet.R;
+import com.robrowski.automatictimesheet.activity.EditEventActivity;
+import com.robrowski.automatictimesheet.model.Event;
 import com.software.shell.fab.ActionButton;
 
 import java.util.ArrayList;
@@ -27,7 +32,7 @@ public class FabCreateMenuFragment extends Fragment implements View.OnClickListe
     private List<ActionButton> mCreateOptionsButtons = new ArrayList<ActionButton>();
 
     private final int mAnimationDelayPerItem = 75;
-    private boolean mMenuOpened = false;
+    private boolean mMenuOpening = false;
     private Handler mUiHandler = new Handler();
 
 
@@ -82,11 +87,12 @@ public class FabCreateMenuFragment extends Fragment implements View.OnClickListe
         int delay = 0;
         Log.d(TAG, "Toggling create menu");
         mFabCreateMenu.setClickable(false); // Lock it for safety
-        mMenuOpened = !mMenuOpened;
+        mMenuOpening = !mMenuOpening;
 
-        if (!mMenuOpened){ // Opening menu
+        if (mMenuOpening){ // Opening menu
             // TODO animate change in the + icon to indicate cancel
             mFabCreateMenu.setImageResource(R.drawable.ic_clear_white_24dp);
+            Log.d(TAG, "animating menu...");
 
             for(int i = 0; i < mCreateOptionsButtons.size(); i++){
                 final ActionButton option = mCreateOptionsButtons.get(i);
@@ -98,10 +104,11 @@ public class FabCreateMenuFragment extends Fragment implements View.OnClickListe
                 }, delay);
                 delay += mAnimationDelayPerItem;
             }
-        }
-        else{ // Closing menu
+        } else { // Closing menu
+            Log.d(TAG, "closing menu...");
+            mFabCreateMenu.setImageResource(R.drawable.ic_add_white_24dp);
+
             for(int i = mCreateOptionsButtons.size()-1; i >= 0; i--){
-                mFabCreateMenu.setImageResource(R.drawable.ic_add_white_24dp);
                 final ActionButton option = mCreateOptionsButtons.get(i);
                 mUiHandler.postDelayed(new Runnable() {
                     @Override
@@ -120,6 +127,7 @@ public class FabCreateMenuFragment extends Fragment implements View.OnClickListe
         @Override
         public void onClick(View view) {
             toggleMenu();
+            Context c = getActivity();
             switch (view.getId()){
                 case R.id.fab_new_category:
                     Log.d(TAG, "new category fab pressed" );
@@ -128,7 +136,9 @@ public class FabCreateMenuFragment extends Fragment implements View.OnClickListe
                     break;
                 case R.id.fab_new_event:
                     Log.d(TAG, "new event FAB pressed" );
-                    // TODO Launch new event activity
+                    Intent intent = new Intent(c, EditEventActivity.class);
+                    intent.putExtra(AppConstants.INTENT_EVENT_PARCELABLE, new Event());
+                    c.startActivity(intent);
                     break;
                 case R.id.fab_new_location:
                     Log.d(TAG,"New location FAB pressed");

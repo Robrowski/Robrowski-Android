@@ -12,10 +12,11 @@ import java.util.Date;
  */
 public class Event implements Parcelable{
 
-    public long id;
+    public long id = -1; // Implement this? maybe!?
     public Calendar mCalendar = Calendar.getInstance();
-    public Boolean mTransition;
-    public String mCategory, mLocation; // location referenced by name
+    public Boolean mTransition = false;
+    // TODO better default values
+    public String mCategory = "Home", mLocation = "Wellesley"; // location referenced by name
 
 
     /** Create an Event object from a db cursor */

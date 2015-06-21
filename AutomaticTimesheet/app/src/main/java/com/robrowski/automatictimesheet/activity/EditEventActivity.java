@@ -16,7 +16,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.robrowski.automatictimesheet.AppConstants;
 import com.robrowski.automatictimesheet.R;
+import com.robrowski.automatictimesheet.activity.fragment.FabCreateMenuFragment;
 import com.robrowski.automatictimesheet.model.Event;
 
 import java.text.SimpleDateFormat;
@@ -45,13 +47,15 @@ public class EditEventActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        getIntent(); // TODO Pull the event out of the intent
+        super.onCreate(savedInstanceState);
 
+        mEvent = (Event) getIntent().getParcelableExtra(AppConstants.INTENT_EVENT_PARCELABLE);
         mCalendar = mEvent.mCalendar;
 
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_event);
+        FabCreateMenuFragment.addToActivity(this, R.id.edit_layout);
 
+        // Acquire references to fields
         mEditDate = (TextView) findViewById(R.id.edit_date);
         mEditTime = (TextView) findViewById(R.id.edit_time);
         mTransitionSwitch = (CompoundButton) findViewById(R.id.transition_switch);
@@ -62,7 +66,8 @@ public class EditEventActivity
         updateTransitionSwitch();
 
 
-         mOnDateSetListener = new DatePickerDialog.OnDateSetListener() {
+        // Set up listeners for opening dialogs
+        mOnDateSetListener = new DatePickerDialog.OnDateSetListener() {
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -129,9 +134,9 @@ public class EditEventActivity
                 mCalendar.get(Calendar.MINUTE),
                 false).show(); // TODO 24 hr mode as a preference
     }
-    
-    
-    
+
+
+
     private void updateDateLabel(){
         String dateFormat = "MMM dd, yyyy";
         // TODO cute stuff to say "Yesterday" or "Two Days ago" or "Today"
