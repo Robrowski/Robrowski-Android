@@ -43,7 +43,6 @@ public class EditEventActivity
      *  be saved to the db. It will hold all edits.
      */
     private Event mEvent = new Event();// TODO - dont init here
-    // TODO keep in saved instance
     private Calendar mCalendar;
 
 
@@ -117,7 +116,7 @@ public class EditEventActivity
 
 
 
-
+    // TODO something about not messing with the future? meh
     /** Called when the date field is clicked on */
     public void editDate(View v){
         new DatePickerDialog(this,
@@ -140,11 +139,37 @@ public class EditEventActivity
 
 
     private void updateDateLabel(){
-        String dateFormat = "MMM dd, yyyy";
-        // TODO cute stuff to say "Yesterday" or "Two Days ago" or "Today"
-        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.US);
-        mEditDate.setText(sdf.format(mCalendar.getTime()));
+        // TODO make the cute format optional via preferences
+        Calendar today = Calendar.getInstance();
+        Calendar yesterday = Calendar.getInstance();
+        Calendar twoDaysAgo = Calendar.getInstance();
+        Calendar tomorrow = Calendar.getInstance();
+
+        yesterday.add(Calendar.DAY_OF_YEAR, -1);
+        twoDaysAgo.add(Calendar.DAY_OF_YEAR, -2);
+        tomorrow.add(Calendar.DAY_OF_YEAR, 1);
+
+        if (datesEqual(mCalendar, today)) { // Today
+            mEditDate.setText("Today");
+        } else if (datesEqual(mCalendar, yesterday)){ // Yesterday
+            mEditDate.setText("Yesterday");
+        } else if (datesEqual(mCalendar, twoDaysAgo)) { // Two days ago
+            mEditDate.setText("Two days ago");
+        } else if (datesEqual(mCalendar, tomorrow)){
+            mEditDate.setText("Tomorrow");
+        } else {
+            String dateFormat = "EEEE, MMM dd, yyyy";
+            SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.US);
+            mEditDate.setText(sdf.format(mCalendar.getTime()));
+        }
     }
+
+    // Compare two dates (year and date of year)
+    private boolean datesEqual(Calendar a, Calendar b){
+        return a.get(Calendar.YEAR) == b.get(Calendar.YEAR)
+                && a.get(Calendar.DAY_OF_YEAR) == b.get(Calendar.DAY_OF_YEAR);
+        }
+
 
     private void updateTimeLabel(){
         String timeFormat = "hh:mm a";

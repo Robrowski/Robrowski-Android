@@ -2,13 +2,16 @@ package com.robrowski.automatictimesheet.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+import android.widget.TextView;
 
 import com.robrowski.automatictimesheet.R;
 import com.robrowski.automatictimesheet.activity.fragment.FabCreateMenuFragment;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 
 // TODO FragmentActivity? Do I even need a fragment at all? no dynamic work here...
@@ -23,10 +26,15 @@ public class HomeActivity extends ActionBarActivity {
         FabCreateMenuFragment.addToActivity(this, R.id.home_layout);
 
 
+        initTodayCard();
     }
 
-    public void onClickTest(View v){
-        Log.i(TAG, "yup");
+
+    private void initTodayCard(){
+        TextView todaysDateText = (TextView) findViewById(R.id.text_todays_date);
+        String dateFormat = "EEEE, MMM dd, yyyy";
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.US);
+        todaysDateText.setText(sdf.format( new Date()));
     }
 
 

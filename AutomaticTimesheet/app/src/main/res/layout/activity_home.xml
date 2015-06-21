@@ -42,8 +42,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Today&apos;s Date"
-                    android:id="@+id/textView"
+                    android:text="WHY IS NOT SET"
+                    android:id="@+id/text_todays_date"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
                     android:textColor="@color/bright_foreground_inverse_material_light" />
@@ -87,8 +87,7 @@
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
                     android:textColor="@color/link_text_material_light"
-                    android:clickable="true"
-                    android:onClick="onClickTest"/>
+                    android:clickable="true"/>
 
                 <TextView
                     android:layout_width="wrap_content"
