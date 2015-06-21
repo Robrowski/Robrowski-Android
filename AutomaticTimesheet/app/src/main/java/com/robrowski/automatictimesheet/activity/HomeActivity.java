@@ -1,29 +1,32 @@
 package com.robrowski.automatictimesheet.activity;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.robrowski.automatictimesheet.R;
+import com.robrowski.automatictimesheet.activity.fragment.FabCreateMenuFragment;
 
 
 // TODO FragmentActivity? Do I even need a fragment at all? no dynamic work here...
 public class HomeActivity extends ActionBarActivity {
+    private static final String TAG = "HomeActivity";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
-                    .commit();
-        }
+        FabCreateMenuFragment.addToActivity(this, R.id.home_layout);
+
+
+    }
+
+    public void onClickTest(View v){
+        Log.i(TAG, "yup");
     }
 
 
@@ -49,19 +52,5 @@ public class HomeActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
 
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-            return rootView;
-        }
-    }
 }

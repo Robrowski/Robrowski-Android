@@ -1,0 +1,12 @@
+<resources>
+
+    <!--old greenish shades-->
+    <!--<color name="colorPrimary">#0FC689</color>-->
+    <!--<color name="colorDark">#097A54</color>-->
+    <!--<color name="colorAccent">#9DFF00</color>-->
+
+    <color name="colorDark">#D84A05</color>
+    <color name="colorPrimary">#EC7505</color>
+    <color name="colorAccent">#F1D434</color>
+    
+</resources>

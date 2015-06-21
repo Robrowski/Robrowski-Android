@@ -39,6 +39,7 @@ public class EditEventActivity
      *  be saved to the db. It will hold all edits.
      */
     private Event mEvent = new Event();// TODO - dont init here
+    // TODO keep in saved instance
     private Calendar mCalendar;
 
 

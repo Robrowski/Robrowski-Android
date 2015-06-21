@@ -27,4 +27,6 @@ dependencies {
 
     compile 'com.google.android.gms:play-services-location:7.0.0'
     compile 'com.google.android.gms:play-services-maps:7.0.0'
+
+    compile 'com.github.shell-software:fab:1.0.5'
 }
