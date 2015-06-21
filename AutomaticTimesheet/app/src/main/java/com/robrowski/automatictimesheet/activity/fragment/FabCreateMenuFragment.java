@@ -26,7 +26,7 @@ public class FabCreateMenuFragment extends Fragment implements View.OnClickListe
     private ActionButton mFabCreateMenu;
     private List<ActionButton> mCreateOptionsButtons = new ArrayList<ActionButton>();
 
-    private final int mAnimationDelayPerItem = 50;
+    private final int mAnimationDelayPerItem = 75;
     private boolean mMenuOpened = false;
     private Handler mUiHandler = new Handler();
 
@@ -56,8 +56,8 @@ public class FabCreateMenuFragment extends Fragment implements View.OnClickListe
         ActionButton fab_new_location = (ActionButton) mView.findViewById(R.id.fab_new_location);
 
         // Save references
-        mCreateOptionsButtons.add(fab_new_category);
         mCreateOptionsButtons.add(fab_new_location);
+        mCreateOptionsButtons.add(fab_new_category);
         if (!getActivity().getClass().getSimpleName().equals("EditEventActivity")){ // TODO smarter
             mCreateOptionsButtons.add(fab_new_event); // Only included if NOT in a new event
         }
@@ -65,8 +65,8 @@ public class FabCreateMenuFragment extends Fragment implements View.OnClickListe
         // Set up click listeners
         mFabCreateMenu.setOnClickListener(this);
         fab_new_event.setOnClickListener(optionClick);
-        fab_new_category.setOnClickListener(optionClick);
         fab_new_location.setOnClickListener(optionClick);
+        fab_new_category.setOnClickListener(optionClick);
 
         return mView;
     }
@@ -81,8 +81,12 @@ public class FabCreateMenuFragment extends Fragment implements View.OnClickListe
     public void toggleMenu(){
         int delay = 0;
         Log.d(TAG, "Toggling create menu");
+        mFabCreateMenu.setClickable(false); // Lock it for safety
+        mMenuOpened = !mMenuOpened;
+
         if (!mMenuOpened){ // Opening menu
             // TODO animate change in the + icon to indicate cancel
+            mFabCreateMenu.setImageResource(R.drawable.ic_clear_white_24dp);
 
             for(int i = 0; i < mCreateOptionsButtons.size(); i++){
                 final ActionButton option = mCreateOptionsButtons.get(i);
@@ -97,6 +101,7 @@ public class FabCreateMenuFragment extends Fragment implements View.OnClickListe
         }
         else{ // Closing menu
             for(int i = mCreateOptionsButtons.size()-1; i >= 0; i--){
+                mFabCreateMenu.setImageResource(R.drawable.ic_add_white_24dp);
                 final ActionButton option = mCreateOptionsButtons.get(i);
                 mUiHandler.postDelayed(new Runnable() {
                     @Override
@@ -107,7 +112,7 @@ public class FabCreateMenuFragment extends Fragment implements View.OnClickListe
                 delay += mAnimationDelayPerItem;
             }
         }
-        mMenuOpened = !mMenuOpened;
+        mFabCreateMenu.setClickable(true);
     }
 
     public View.OnClickListener optionClick = new View.OnClickListener(){
