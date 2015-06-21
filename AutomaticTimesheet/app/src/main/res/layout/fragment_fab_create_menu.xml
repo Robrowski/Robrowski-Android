@@ -23,7 +23,7 @@
         fab:shadow_yOffset="1.0dp"
         fab:show_animation="@anim/fab_roll_from_right"
         fab:type="normal"
-        fab:rippleEffect_enabled="false"
+        fab:rippleEffect_enabled="true"
         android:cropToPadding="false"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"

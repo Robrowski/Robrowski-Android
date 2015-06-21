@@ -3,6 +3,7 @@ package com.robrowski.automatictimesheet.activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -18,6 +19,7 @@ import android.widget.TimePicker;
 
 import com.robrowski.automatictimesheet.AppConstants;
 import com.robrowski.automatictimesheet.R;
+import com.robrowski.automatictimesheet.activity.dialog.DeleteDialog;
 import com.robrowski.automatictimesheet.activity.fragment.FabCreateMenuFragment;
 import com.robrowski.automatictimesheet.model.Event;
 
@@ -27,7 +29,7 @@ import java.util.Locale;
 
 public class EditEventActivity
         extends ActionBarActivity
-        implements AdapterView.OnItemSelectedListener{
+        implements AdapterView.OnItemSelectedListener, DeleteDialog.DeleteDialogListener {
     private static final String TAG = "EditEventActivity";
 
     private TextView mEditDate, mEditTime;
@@ -194,13 +196,27 @@ public class EditEventActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch( item.getItemId()){
+            case R.id.action_settings:
+                return true;
+            case R.id.action_save:
+                // TODO Save event to db
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+            case R.id.action_delete:
+                DeleteDialog.showDeleteDialog(this, this);
+                return true;
+            case android.R.id.home: // Being explicit. Also, just discard all changes
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
+    }
 
-        return super.onOptionsItemSelected(item);
+    @Override
+    public void deletionConfirmed() {
+        // TODO delete event from db
+        NavUtils.navigateUpFromSameTask(this);
     }
 }
