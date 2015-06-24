@@ -12,6 +12,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/scroll_days_events"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true" >
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/day_linear_layout">
+
+        </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

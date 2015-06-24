@@ -1,24 +1,22 @@
 package com.robrowski.automatictimesheet.activity;
 
-import java.util.Locale;
-
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
-import android.view.LayoutInflater;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.robrowski.automatictimesheet.R;
+import com.robrowski.automatictimesheet.activity.fragment.DayFragment;
+import com.robrowski.automatictimesheet.activity.fragment.FabCreateMenuFragment;
+
+import java.util.Date;
+import java.util.Locale;
 
 public class DayViewActivity extends ActionBarActivity implements ActionBar.TabListener {
 
@@ -41,6 +39,9 @@ public class DayViewActivity extends ActionBarActivity implements ActionBar.TabL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_day_view);
+        FabCreateMenuFragment.addToActivity(this, R.id.day_view_frame);
+
+
 
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
@@ -51,7 +52,7 @@ public class DayViewActivity extends ActionBarActivity implements ActionBar.TabL
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager = (ViewPager) findViewById(R.id.day_pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         // When swiping between different sections, select the corresponding
@@ -129,7 +130,7 @@ public class DayViewActivity extends ActionBarActivity implements ActionBar.TabL
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            return DayFragment.newInstance(new Date());
         }
 
         @Override
@@ -153,37 +154,6 @@ public class DayViewActivity extends ActionBarActivity implements ActionBar.TabL
         }
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
 
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_day_view, container, false);
-            return rootView;
-        }
-    }
 
 }
