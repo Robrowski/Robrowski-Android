@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.robrowski.automatictimesheet.R;
@@ -41,25 +42,58 @@ public class DayFragment extends Fragment {
 
         mDate = (Date) getArguments().getSerializable(KEY_DATE);
 
+
+
+
         // TODO Pull events from DB to populate list with
 
 
         // TODO make inferences about events and label "time at work" etc
     }
 
+
+    private RelativeLayout mDayInferencesLayout, mDayEventsLayout;
+
+    private static final int TIME_LABEL_TOP_PADDING = 80,
+            TIME_LABEL_BOT_PADDING = TIME_LABEL_TOP_PADDING,
+            TEXT_VIEW_HEIGHT = 57, // Measured on Galazy S5
+            HOURS_IN_DAY = 24,
+            MINUTES_IN_DAY = 60,
+            DAY_HEIGHT_PIXELS = (TIME_LABEL_BOT_PADDING + TIME_LABEL_TOP_PADDING + TEXT_VIEW_HEIGHT)
+                    * HOURS_IN_DAY;
+
+    private static final float PIXELS_PER_MINUTE = DAY_HEIGHT_PIXELS / ( HOURS_IN_DAY * MINUTES_IN_DAY);
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_day_view, container, false);
 
-        LinearLayout mLayout = (LinearLayout) rootView.findViewById(R.id.day_linear_layout);
+        // Get layouts for filling with content later
+        mDayEventsLayout = (RelativeLayout) rootView.findViewById(R.id.day_events_layout);
+        mDayInferencesLayout = (RelativeLayout) rootView.findViewById(R.id.day_inferences_layout);
 
-        for (int i = 0; i < 24; i++){
+
+        // Set up time labels
+        LinearLayout mLayout = (LinearLayout) rootView.findViewById(R.id.day_times_layout);
+        for (int i = 0; i < HOURS_IN_DAY; i++){
             TextView tv = new TextView(getActivity());
             // TODO make a prettier line
-            tv.setText(String.format("%2d AM    ------------------------------------------------", i));
-            tv.setPadding(10, 30, 10, 30);
+            tv.setText(String.format("%2d AM -----------------------------------------------------------", i));
+            tv.setPadding(10, TIME_LABEL_TOP_PADDING, 10, TIME_LABEL_BOT_PADDING);
             mLayout.addView(tv);
         }
+
+
+
+        // TODO set scrolled position to something interesting for a given day (ex, 2 hr before first event)
+
+
+
+        // TODO populate events layout with events from DB
+        // TODO populate interface with cards representing inferences
+
+
+
         return rootView;
     }
 

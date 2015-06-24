@@ -47,6 +47,10 @@ public class DayViewActivity extends ActionBarActivity implements ActionBar.TabL
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
+        // TODO put dates as tab labels (one tab per day in database)
+        // TODO 1. set tab to day given in getIntent OR to today
+
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
