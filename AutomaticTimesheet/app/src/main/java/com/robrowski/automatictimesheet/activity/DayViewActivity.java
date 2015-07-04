@@ -27,6 +27,7 @@ public class DayViewActivity extends ActionBarActivity implements ActionBar.TabL
      * loaded fragment in memory. If this becomes too memory intensive, it
      * may be best to switch to a
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
+     * // TODO consider FragmentStatePagerAdapter
      */
     SectionsPagerAdapter mSectionsPagerAdapter;
 
@@ -96,6 +97,9 @@ public class DayViewActivity extends ActionBarActivity implements ActionBar.TabL
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+
+        // TODO menu item to allow layer flipping (on all fragments!??! )
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {

@@ -7,43 +7,45 @@ import android.os.Parcelable;
 import java.util.Calendar;
 import java.util.Date;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * Created by Robrowski on 6/19/2015.
  */
+@Data
+@NoArgsConstructor
 public class Event implements Parcelable{
 
-    public long id = -1; // Implement this? maybe!?
-    public Calendar mCalendar = Calendar.getInstance();
-    public Boolean mTransition = false;
+    private long id = -1; // Implement this? maybe!?
+    private Calendar calendar = Calendar.getInstance();
+    private Boolean transition = false;
     // TODO better default values
-    public String mCategory = "Home", mLocation = "Wellesley"; // location referenced by name
+    private String category = "Home", location = "Wellesley"; // location referenced by name
 
 
-    /** Create an Event object from a db cursor */
+    /** // TODO Create an Event object from a db cursor */
     public Event(Cursor c){
 
     }
 
-    /** Default Constructor */
-    public Event(){
 
-    }
 
     private Event(Parcel in) {
         id = in.readLong();
-        mCalendar.setTime( (Date) in.readSerializable());
-        mTransition = new Boolean(in.readString());
-        mCategory = in.readString();
-        mLocation = in.readString();
+        calendar.setTime( (Date) in.readSerializable());
+        transition = new Boolean(in.readString());
+        category = in.readString();
+        location = in.readString();
     }
 
     @Override
     public void writeToParcel(Parcel out, int flags) {
         out.writeLong(id);
-        out.writeSerializable( mCalendar.getTime());
-        out.writeString( mTransition.toString());
-        out.writeString(mCategory);
-        out.writeString(mLocation);
+        out.writeSerializable( calendar.getTime());
+        out.writeString(transition.toString());
+        out.writeString(category);
+        out.writeString(location);
     }
 
     @Override

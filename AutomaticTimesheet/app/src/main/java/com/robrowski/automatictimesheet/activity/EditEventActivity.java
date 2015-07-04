@@ -51,7 +51,7 @@ public class EditEventActivity
         super.onCreate(savedInstanceState);
 
         mEvent = (Event) getIntent().getParcelableExtra(AppConstants.INTENT_EVENT_PARCELABLE);
-        mCalendar = mEvent.mCalendar;
+        mCalendar = mEvent.getCalendar();
 
         setContentView(R.layout.activity_edit_event);
         FabCreateMenuFragment.addToActivity(this, R.id.edit_layout);
@@ -91,7 +91,7 @@ public class EditEventActivity
 
         mTransitionSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mEvent.mTransition = isChecked;
+                mEvent.setTransition( isChecked);
                 updateTransitionSwitch();
             }
         });
@@ -178,8 +178,8 @@ public class EditEventActivity
     }
 
     private void updateTransitionSwitch() {
-        mTransitionSwitch.setChecked(mEvent.mTransition);
-        if (mEvent.mTransition){
+        mTransitionSwitch.setChecked(mEvent.getTransition());
+        if (mEvent.getTransition()){
             mTransitionSwitch.setText("Arrival");
         } else {
             mTransitionSwitch.setText("Departure");
@@ -194,10 +194,10 @@ public class EditEventActivity
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String selected = (String) parent.getSelectedItem();
         if (view.getId() == R.id.loc_category_spinner) { // Category
-            mEvent.mCategory = selected;
-            Log.i(TAG, "Category: " + mEvent.mCategory);
+            mEvent.setCategory(selected);
+            Log.i(TAG, "Category: " + mEvent.getCategory());
         } else { // location spinner
-            mEvent.mLocation = selected;
+            mEvent.setLocation( selected);
             Log.i(TAG, "Location: " + selected);
         }
     }
@@ -226,13 +226,13 @@ public class EditEventActivity
                 return true;
             case R.id.action_save:
                 // TODO Save event to db
-                NavUtils.navigateUpFromSameTask(this);
+                navigateUp();
                 return true;
             case R.id.action_delete:
                 DeleteDialog.showDeleteDialog(this, this);
                 return true;
             case android.R.id.home: // Being explicit. Also, just discard all changes
-                NavUtils.navigateUpFromSameTask(this);
+                navigateUp();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -242,6 +242,12 @@ public class EditEventActivity
     @Override
     public void deletionConfirmed() {
         // TODO delete event from db
+        navigateUp();
+    }
+
+    /** Helper for up navigation **/
+    private void navigateUp(){
+        // TODO proper up nav to PREVIOUS activity
         NavUtils.navigateUpFromSameTask(this);
     }
 }
